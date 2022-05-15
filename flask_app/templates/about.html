@@ -1,0 +1,35 @@
+{% extends "header.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h1>About this Project</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col-8 mx-auto mt-2">
+            <h4>Group Members:</h4>
+            <ul><li>Christian Tonti</li></ul>
+            <br/>
+            <h4>About:</h4>
+            <p>This project serves as a member portal for any sort of organization that 
+                tries to keep members participating through the use of a points system.
+                Largely inspired by my fraternity (hence the name), it includes not only
+                point tracking, but also event creation onto a Google Calendar, the creation
+                and completion of custom forms, basic account management functions such as
+                profile pictures, and a member info lookup page.
+                <br/>
+                One small note is that a user must be manually elevated to Admin role in the database,
+                as this is the only secure way I could think about doing so.
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

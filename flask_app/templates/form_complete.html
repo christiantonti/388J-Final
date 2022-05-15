@@ -1,0 +1,43 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Form: {{ name }}</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col">    
+            {% if form %}
+                <form action="" method="post">
+                    {{ form.csrf_token }}
+                    {% for field in form %}
+                        {% if field.type not in ('SubmitField', 'CSRFTokenField') %}
+                            {% if field.type == 'BooleanField' %}
+                                <div class="form-check mb-3 px-0">
+                                    {{ field.label(class="form-check-label") }}
+                                    {{ field(class="form-check") }}
+                                </div>
+                            {% else %}
+                                <div class="form-group mb-3">
+                                    {{ field.label(class="form-control-label") }}
+                                    {{ field(class="form-control") }}
+                                </div>
+                            {% endif %}
+                        
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-group mb-3">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}>

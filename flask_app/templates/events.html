@@ -1,0 +1,31 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Event Calendar</h1>
+    <div class="row">
+        <div class="col-8">
+            <iframe id="calendarFrame" src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FNew_York&showTitle=0&showCalendars=0&showTabs=1&showPrint=1&src=amgyZTA4aGM3OGhxYnNtcDRjdHJvanVnMm9AZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23F09300" style="border:solid 1px #777" height="500" frameborder="0" scrolling="no"></iframe>
+        </div>
+        <div class="col-4">
+            <h3>Upcoming Events</h3>
+            {% if events %}
+                <ul>
+                    {% for event in events %}
+                    <li>
+                        {{event.title}} - {{event.start}}
+                        <ul>
+                            <li>{{event.description}}</li>
+                            {% if event.form_link %}
+                                <li><a href='{{event.form_link}}'>Attendance Form</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No events found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}>

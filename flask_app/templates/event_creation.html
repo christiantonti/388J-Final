@@ -1,0 +1,47 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Event Creation</h1>
+    <small class="mb-3"><b>NOTE: Event Creation is very limited in functionality.
+         If you want to edit or remove an event, please do so on the Google Calendar</b></small>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col">    
+            <form action="" method="post">
+                {{ form.csrf_token }}
+                <div class="form-group mb-3">
+                    {{ form.name.label(class="form-control-label") }}
+                    {{ form.name(class="form-control") }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.description.label(class="form-control-label") }}
+                    {{ form.description(class="form-control") }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.start.label(class="form-control-label") }}
+                    {{ form.start(class="form-control") }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.end.label(class="form-control-label") }}
+                    {{ form.end(class="form-control") }}
+                </div>
+                <div class="form-check px-0 mb-3">
+                    {{ form.create_form.label(class="form-check-label") }}
+                    {{ form.create_form(class="form-check") }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}>

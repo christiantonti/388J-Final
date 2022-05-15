@@ -1,0 +1,74 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Member Forms</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row mt-2">
+        <h3>Uncompleted Forms</h3>
+        {% if u_forms %}
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Due Date</th>
+                        <th>Link to Form</th>
+                    </tr>
+                </thead>
+                <tbody id="formsTable">
+                    {% for form in u_forms %}
+                        <tr>
+                            <td>{{ form.name }}</td>
+                            {% if form.is_late %}
+                                <td class="text-danger"><strong>{{ form.due_by }}</strong></td>
+                            {% else %}
+                                <td>{{ form.due_by }}</td>
+                            {% endif %}
+                            <td><a href="/viewForm?id={{form.uuid}}" class="btn btn-primary">Go &rarr;</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No uncompleted forms found.</p>
+        {% endif %}
+    </div>
+    <div class="row mt-2">
+        <h3>Completed Forms</h3>
+        {% if c_forms %}
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Completed Date</th>
+                        <th>Late?</th>
+                    </tr>
+                </thead>
+                <tbody id="formsTable">
+                    {% for sub in c_forms %}
+                        <tr>
+                            <td>{{ sub.form.name }}</td>
+                            <td>{{ sub.completed_dt }}</td>
+                            {% if sub.is_late %}
+                                <td class="text-danger"><strong>Yes</strong></td>
+                            {% else %}
+                                <td class="text-success">No</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No completed forms found.</p>
+        {% endif %}
+    </div>
+    
+</div>
+{% endblock %}>

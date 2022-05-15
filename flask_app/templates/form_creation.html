@@ -1,0 +1,78 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Form Management</h1>
+    <small class="mb-3"><b>NOTE: Form Creation is very limited in functionality.
+         Input validation on user-created forms does not exist beyond type checking.
+          Additionally, forms cannot be modified, only deleted &mdash; so create them carefully!</b></small>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col">    
+            {% if form %}
+                <form action="" method="post">
+                    {{ form.csrf_token }}
+                    {% for field in form %}
+                        {% if field.type not in ('SubmitField', 'CSRFTokenField') %}
+                        <div class="form-group mb-3">
+                            {{ field.label(class="form-control-label") }}
+                            {{ field(class="form-control", id="memberSelect") }}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="form-group mb-3">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            {% else %}
+                <div class="row mt-3">
+                    <h3>Form Creation</h3>
+                    <form action="" method="get">
+                        <div class="form-group mb-3">
+                            <label class="form-control-label" for="num_fields">To create a form, first select the number of fields to create:</label>
+                            <input class="form-control" id="num_fields" max="10" min="1" name="num_fields" required="" type="number" value="2">
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-primary" id="submit" name="submit" type="submit" value="Submit">
+                        </div>
+                    </form>
+                </div>
+                <div class="row mt-3">
+                    <h3>Existing Forms</h3>
+                    {% if all_forms %}
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Due Date</th>
+                                    <th>Submissions</th>
+                                    <th>Remove?</th>
+                                </tr>
+                            </thead>
+                            <tbody id="formsTable">
+                                {% for form in all_forms %}
+                                    <tr>
+                                        <td>{{ form.name }}</td>
+                                        <td>{{ form.due_by }}</td>
+                                        <td><a href="/viewSubmissions?id={{form.uuid}}" class="btn btn-primary">Go &rarr;</a></td>
+                                        <td><a href="/formRemove?id={{form.uuid}}" class="btn btn-close"></a></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>No user-created forms found.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}>

@@ -1,0 +1,49 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Submissions for: {{ form_obj.name }}</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="row mt-3">
+        <div class="col">
+            {% if form_subs %}
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>UID</th>
+                            <th>Completed at</th>
+                            {% for label in form_obj.labels %}
+                                <th>{{ label }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sub in form_subs %}
+                            <tr>
+                                <td>{{ sub.user.uid }}</td>
+                                {% if sub.is_late %}
+                                <td class="text-danger"><strong>{{ sub.completed_dt }}</strong></td>
+                                {% else %}
+                                    <td>{{ sub.completed_dt }}</td>
+                                {% endif %}
+                                {% for response in sub.data %}
+                                    <td>{{ response }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h4>No submissions found!</h4>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}>

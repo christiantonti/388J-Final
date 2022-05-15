@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block header %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3" id="mainNavbar">
+    <a class="navbar-brand" href="{{ url_for('functions.index') }}">KTPortal</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('functions.index') }}">Home</a>
+            </li>
+            {% if current_user.is_authenticated %}
+                <!-- user links here -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('functions.forms') }}">Forms</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('functions.events') }}">Events</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('functions.members') }}">Members</a>
+                </li>
+                {% if current_user.is_admin() %}
+                    <!-- admin links here -->
+                    <li class="nav-item border-end mx-2"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.points') }}">Points</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.formCreate') }}">Form Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.eventCreate') }}">Event Creation</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </div>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('functions.about') }}">About</a>
+            </li>
+            {% if current_user.is_authenticated %}
+                <a class="btn btn-secondary" href="{{ url_for('users.account') }}">Account</a>
+                <a class="btn btn-secondary mx-2" href="{{ url_for('users.logout') }}">Log Out</a>
+            {% else %}
+                <a class="btn btn-secondary" href="{{ url_for('users.login') }}">Log In</a>
+            {% endif %}
+        </li>              
+    </ul>
+</nav>
+
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+{% endblock %}

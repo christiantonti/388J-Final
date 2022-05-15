@@ -1,0 +1,92 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="modal fade" id="memberModal" tabindex="-1" aria-labelledby="memberModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="memberModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-4" id="memberModalImage">
+                            <!-- inserts here -->
+                        </div>
+                        <div class="col-8">
+                            <p>Phone: <span id="memberModalPhone"></span></p>
+                            <p>Email: <span id="memberModalEmail"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-8 h-100">
+            <h1>Member Lookup</h1>
+            <small class="mb-3">Click each card for more info.</small>
+        </div>
+        <div class="col-4">
+            <form action="" method="post">
+                {{ form.csrf_token }}
+                <div class="row align-items-end">
+                    <div class="mb-3 col-auto">
+                        {{ form.query.label(class="form-control-label") }}
+                        {{ form.query(class="form-control", id="memberSelect") }}
+                    </div>
+                    <div class="mb-3 col-auto">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        {% if query %}
+            <h5>Search results for '{{query}}':</h5>
+        {% endif %}
+        <div class="d-flex flex-wrap justify-content-evenly">
+            {% for user in users %}
+                <div class="card text-center bg-light pt-2">
+                    <div class="d-none memberData" 
+                        data-name="{{user.fname}} {{user.lname}}"
+                        data-phone="{{ user.phone }}"
+                        data-email="{{ user.email }}"
+                    ></div>
+                    {% if user.img %}
+                        <img class="propic mx-auto" src="data:image/png;base64,{{user.img}}" alt="image">
+                    {% else %}
+                        <img class="propic mx-auto" src="{{ url_for('static', filename='default.jpg') }}" alt="image">
+                    {% endif %}
+                    <div class="card-body">
+                        <b class="card-text">{{user.fname}} {{user.lname}}</b>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div> 
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+    $(document).ready(function() {
+        let modal = new bootstrap.Modal($('#memberModal'));
+        let modalEl = $('#memberModal');
+        $(".card").click(function(e) {
+            let info = $(this).find(".memberData").data();
+            let img = $(this).find('.propic').clone();
+            modalEl.find('#memberModalLabel').text(info.name);
+            modalEl.find('#memberModalImage').html(img);
+            modalEl.find('#memberModalPhone').text(info.phone);
+            modalEl.find('#memberModalEmail').text(info.email);
+            modal.show();
+        });
+    });
+</script>
+{% endblock %}>
